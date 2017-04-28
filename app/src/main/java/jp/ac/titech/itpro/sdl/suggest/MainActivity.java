@@ -25,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText inputText;
     private ArrayAdapter<String> resultAdapter;
+    private ArrayList<String> resultData = new ArrayList<>();
+    private final static String KEY_NAME = "MainActivity.resultData";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +45,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        resultAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<String>());
+        if (savedInstanceState != null)
+            resultData = savedInstanceState.getStringArrayList(KEY_NAME);
+
+        resultAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, resultData);
         resultList.setAdapter(resultAdapter);
         resultList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -54,6 +59,12 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putStringArrayList(KEY_NAME, resultData);
     }
 
     private class SuggestTask extends AsyncTask<String, Void, List<String>> {
