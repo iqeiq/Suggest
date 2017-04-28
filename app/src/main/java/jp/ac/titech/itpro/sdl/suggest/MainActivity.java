@@ -73,6 +73,12 @@ public class MainActivity extends AppCompatActivity {
             ArrayList<String> result = new ArrayList<>();
             HttpURLConnection conn = null;
             String error = null;
+
+            if(params[0].length() == 0) {
+                result.add(getString(R.string.empty_input));
+                return result;
+            }
+
             try {
                 String query = URLEncoder.encode(params[0], "UTF-8");
                 URL url = new URL(getString(R.string.suggest_url, query));
